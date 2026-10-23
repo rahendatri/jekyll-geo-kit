@@ -1,0 +1,7 @@
+/.bundle/
+/Gemfile.lock
+/pkg/
+/spec/dest/
+/spec/fixtures/.jekyll-cache/
+/spec/fixtures/.jekyll-metadata
+*.gem

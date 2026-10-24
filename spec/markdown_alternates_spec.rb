@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Jekyll::MarkdownAlternates do
+RSpec.describe Jekyll::GeoKit::MarkdownAlternates do
   context "with the default configuration" do
     let(:site) { build_site }
     let(:pages) { alternates(site) }

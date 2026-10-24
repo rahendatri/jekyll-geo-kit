@@ -1,22 +1,22 @@
 # frozen_string_literal: true
 
-require_relative "lib/jekyll/markdown_alternates/version"
+require_relative "lib/jekyll-geo-kit/version"
 
 Gem::Specification.new do |spec|
-  spec.name     = "jekyll-markdown-alternates"
-  spec.version  = Jekyll::MarkdownAlternates::VERSION
+  spec.name     = "jekyll-geo-kit"
+  spec.version  = Jekyll::GeoKit::VERSION
   spec.authors  = ["Rahenda"]
   spec.email    = ["rahendatri@users.noreply.github.com"]
   spec.license  = "MIT"
 
-  spec.summary  = "Serve every Jekyll post as a Markdown alternate for GEO " \
-                  "(Generative Engine Optimization)"
+  spec.summary  = "GEO (Generative Engine Optimization) for Jekyll: serve every " \
+                  "post as a Markdown alternate"
   spec.description = "Generates /<slug>.md companions for each post, declared via " \
                      "rel=alternate type=text/markdown, so LLM crawlers and AI agents " \
                      "can fetch clean Markdown instead of parsing HTML. Each document " \
                      "links back to the site's llms.txt index."
 
-  spec.homepage = "https://github.com/rahendatri/jekyll-markdown-alternates"
+  spec.homepage = "https://github.com/rahendatri/jekyll-geo-kit"
   spec.metadata = {
     "source_code_uri" => spec.homepage,
     "bug_tracker_uri" => "#{spec.homepage}/issues",

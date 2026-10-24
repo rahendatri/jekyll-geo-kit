@@ -1,7 +1,7 @@
-# jekyll-markdown-alternates
+# jekyll-geo-kit
 
-Serve every Jekyll post as a Markdown alternate, for GEO (Generative Engine
-Optimization).
+GEO (Generative Engine Optimization) for a Jekyll site. One feature so far:
+**Markdown alternates** — serve every post as Markdown alongside its HTML.
 
 An LLM crawler or AI agent that lands on `/2026/01/15/a-post.html` can fetch
 `/2026/01/15/a-post.md` instead and get the same text as clean Markdown — no
@@ -29,7 +29,7 @@ The body of the post, exactly as written, still in Markdown.
 ```ruby
 # Gemfile
 group :jekyll_plugins do
-  gem "jekyll-markdown-alternates"
+  gem "jekyll-geo-kit"
 end
 ```
 

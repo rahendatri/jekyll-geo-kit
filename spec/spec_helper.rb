@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "jekyll"
-require "jekyll-markdown-alternates"
+require "jekyll-geo-kit"
 require "fileutils"
 
 FIXTURES = File.expand_path("fixtures", __dir__)
@@ -36,6 +36,6 @@ end
 # The pages this plugin generated, keyed by served path.
 def alternates(site)
   site.pages
-      .grep(Jekyll::MarkdownAlternates::Page)
+      .grep(Jekyll::GeoKit::MarkdownAlternates::Page)
       .to_h { |page| [page.data["permalink"], page] }
 end

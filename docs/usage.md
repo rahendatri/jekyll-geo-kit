@@ -5,7 +5,7 @@ configuration. A post at `/2026/01/15/a-post.html` gets an alternate at
 `/2026/01/15/a-post.md` holding the site-index banner, the document's metadata
 and its unconverted Markdown body.
 
-### Declaring the alternates
+### Declaring the markdown alternates in HTML
 
 Crawlers find the alternates through your HTML, so add this to
 `_includes/head.html`:

@@ -6,6 +6,43 @@ LLM crawlers and AI agents can read your content without parsing a page — GEO
 
 [![CI](https://github.com/rahendatri/jekyll-geo-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/rahendatri/jekyll-geo-kit/actions/workflows/ci.yml)
 
+
+## Quick start
+
+Add the gem to your site's `Gemfile`, in the `:jekyll_plugins` group so Bundler
+loads it for you:
+
+```ruby
+group :jekyll_plugins do
+  gem "jekyll-geo-kit"
+end
+```
+
+Then run `bundle install`.
+
+If you prefer to list your plugins in configuration instead, add it to
+`_config.yml`:
+
+```yaml
+plugins:
+  - jekyll-geo-kit
+```
+
+That's it ! The plugin generates `.md` for every post.
+
+
+## Using GitHub Pages
+
+`jekyll-geo-kit` is a third-party plugin, so GitHub's own Jekyll builder will not 
+run it.
+
+Build your own workflow instead:
+
+1. Use or adapt the example here : [custom-jekyll-github-action](https://github.com/rahendatri/rahendatri.github.io/blob/main/.github/workflows/jekyll.yml)
+2.  Activate the custom Github Pages workflow by choosing `Github Actions` in the following place: `<project-settings> / Pages / Build and Deployment / Source`
+
+
+
 ## What it does
 
 jekyll-geo-kit generates a Markdown alternate at `/<slug>.md` for every written
@@ -19,7 +56,7 @@ document in the configured collections. Each one contains:
 * The body exactly as you wrote it, still in Markdown and never converted to
   HTML
 
-It also ships the `markdown_alternate_url` Liquid filter, so the
+It also includes the `markdown_alternate_url` Liquid filter, so the
 `<link rel="alternate" type="text/markdown">` you put in `head.html` derives its
 path through the same logic the generator used and the two cannot drift apart.
 

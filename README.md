@@ -97,13 +97,12 @@ It covers collection documents — `posts` by default, any collection you
 configure — and not standalone pages like `about.md`.
 
 Being a third-party plugin, it does not run on GitHub's own Jekyll builder; see
-[Installation](docs/installation.md) for the workflow that does.
+[Using GitHub Pages](#using-github-pages) for the workflow that does.
 
 ## Documentation
 
 For more information, see:
 
-* [Installation](docs/installation.md)
 * [Usage](docs/usage.md)
 * [Advanced usage](docs/advanced-usage.md)
 

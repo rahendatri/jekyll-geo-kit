@@ -1,0 +1,43 @@
+name: Release
+
+# Publishing is driven by the tag you create on GitHub: v0.1.0 publishes 0.1.0.
+# The tag is the trigger, and the job refuses to push unless it matches the
+# VERSION constant in the tagged commit.
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  push:
+    name: Push gem to RubyGems.org
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # mandatory for trusted publishing
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Check the tag against lib/jekyll-geo-kit/version.rb
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          version="$(ruby -r ./lib/jekyll-geo-kit/version.rb -e 'print Jekyll::GeoKit::VERSION')"
+          echo "tag=$tag version=$version"
+          if [ "$tag" != "$version" ]; then
+            echo "::error::tag $GITHUB_REF_NAME does not match VERSION $version" >&2
+            exit 1
+          fi
+
+      - run: bundle exec rake spec
+
+      - uses: rubygems/configure-rubygems-credentials@v2.1.0
+
+      - name: Build and push
+        run: |
+          gem build jekyll-geo-kit.gemspec
+          gem push "jekyll-geo-kit-${GITHUB_REF_NAME#v}.gem"

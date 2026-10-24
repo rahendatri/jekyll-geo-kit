@@ -63,6 +63,8 @@ RSpec.describe Jekyll::MarkdownAlternates do
     end
 
     it "writes the file to the served path" do
+      site
+
       expect(File).to exist(File.join(DEST, "2026/01/15/a-published-post.md"))
     end
   end

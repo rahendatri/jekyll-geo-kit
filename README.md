@@ -1,12 +1,27 @@
-# jekyll-geo-kit
+## About jekyll-geo-kit
 
-GEO (Generative Engine Optimization) for a Jekyll site. One feature so far:
-**Markdown alternates** — serve every post as Markdown alongside its HTML.
+A Jekyll plugin that serves every post as clean Markdown alongside its HTML, so
+LLM crawlers and AI agents can read your content without parsing a page — GEO
+(Generative Engine Optimization).
 
-An LLM crawler or AI agent that lands on `/2026/01/15/a-post.html` can fetch
-`/2026/01/15/a-post.md` instead and get the same text as clean Markdown — no
-HTML parsing, no navigation chrome, no boilerplate — with a pointer to your
-site index at the top so it can discover the rest of the site.
+[![CI](https://github.com/rahendatri/jekyll-geo-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/rahendatri/jekyll-geo-kit/actions/workflows/ci.yml)
+
+## What it does
+
+jekyll-geo-kit generates a Markdown alternate at `/<slug>.md` for every written
+document in the configured collections. Each one contains:
+
+* A pointer to your site index (`llms.txt` by default), so an agent that lands
+  on one document can discover the rest of the site
+* The document's metadata as plain lines — title, canonical source URL,
+  publication date, resolved author name, language
+* The description collapsed onto a single quoted line
+* The body exactly as you wrote it, still in Markdown and never converted to
+  HTML
+
+It also ships the `markdown_alternate_url` Liquid filter, so the
+`<link rel="alternate" type="text/markdown">` you put in `head.html` derives its
+path through the same logic the generator used and the two cannot drift apart.
 
 ```
 > ## Site index
@@ -24,75 +39,36 @@ Language: en
 The body of the post, exactly as written, still in Markdown.
 ```
 
-## Installation
+While you could write this generator yourself, jekyll-geo-kit keeps the served
+paths, the metadata format and the `rel=alternate` declaration in one place.
 
-```ruby
-# Gemfile
-group :jekyll_plugins do
-  gem "jekyll-geo-kit"
-end
-```
+## What it doesn't do
 
-Then declare the alternates in `_includes/head.html` so crawlers discover them:
+jekyll-geo-kit only generates the Markdown documents and the filter that links
+them. It does not write your `llms.txt` index — it links to whatever path you
+point `index` at, and leaves creating that file to you or to another plugin.
 
-```liquid
-{%- if page.layout == "post" and page.unlisted != true %}
-<link rel="alternate" type="text/markdown"
-      title="{{ page.title }} — Markdown"
-      href="{{ page.url | markdown_alternate_url }}" />
-{%- endif %}
-```
+It does not inject anything into your HTML. Declaring the alternates is a
+one-line Liquid snippet you add to your own `head.html`, documented under
+[Usage](docs/usage.md).
 
-The `markdown_alternate_url` filter derives the path the same way the generator
-does, so the two can't drift apart.
+It does not convert HTML to Markdown. The alternates carry the document's
+unrendered source body, so a document authored in Markdown round-trips exactly
+while one authored in HTML is served as that HTML.
 
-> **GitHub Pages:** this is a third-party plugin, so GitHub's own Jekyll builder
-> will not run it. Build with a workflow (`actions/jekyll-build-pages` or
-> `bundle exec jekyll build` → `upload-pages-artifact` → `deploy-pages`) instead.
-> GitHub Pages serves `.md` as `text/markdown; charset=utf-8`.
+It covers collection documents — `posts` by default, any collection you
+configure — and not standalone pages like `about.md`.
 
-## Configuration
+Being a third-party plugin, it does not run on GitHub's own Jekyll builder; see
+[Installation](docs/installation.md) for the workflow that does.
 
-Everything is optional. The defaults:
+## Documentation
 
-```yaml
-markdown_alternates:
-  enabled: true           # false turns the plugin off without removing the gem
-  collections: [posts]    # which collections get alternates
-  index: /llms.txt        # site index linked at the top; nil omits the banner
-  extension: .md          # served extension
-  skip_key: unlisted      # front-matter key that excludes a document
-  authors_data: authors   # _data/<key>.yml looked up by the post's `author`
-```
+For more information, see:
 
-| Option | Notes |
-| --- | --- |
-| `enabled` | Set `false` to keep the gem installed but generate nothing. |
-| `collections` | Any collection label, e.g. `[posts, docs]`. Collections with `output: false` are skipped automatically. |
-| `index` | Absolute path on your site. Set to `nil` to drop the index banner entirely. |
-| `extension` | `.md` by default; `.txt` if your host won't serve `.md` usefully. |
-| `skip_key` | A document with `unlisted: true` gets no alternate. Set to `nil` to generate one for every document. |
-| `authors_data` | Author name resolution: `_data/authors.yml` keyed by the post's `author`, then `site.author.name`, then the raw key. |
-
-Drafts and `published: false` documents never get an alternate. Generated pages
-carry `sitemap: false`, so `jekyll-sitemap` leaves them out.
-
-## How it works
-
-A `Jekyll::Generator` at `:low` priority adds one `PageWithoutAFile` per
-document. The source name it reports ends in `.txt` on purpose: Jekyll picks its
-converter from the source extension, so a `.txt` name leaves the Markdown body
-unconverted, while the `permalink` decides the served path and extension.
-
-## Development
-
-```sh
-bundle install
-bundle exec rake spec
-```
-
-The suite builds a fixture site in `spec/fixtures` and asserts on the generated
-pages.
+* [Installation](docs/installation.md)
+* [Usage](docs/usage.md)
+* [Advanced usage](docs/advanced-usage.md)
 
 ## License
 
